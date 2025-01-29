@@ -1,8 +1,6 @@
 "use client"
 import React, { useState } from 'react';
 import Image from 'next/image';
-import styles from './page.module.css';
-import Navbar from '@/components/Navbar/Navbar';
 import '../auth.css';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -46,6 +44,7 @@ export default function Signin() {
         }
 
         console.log(process.env.NEXT_PUBLIC_BACKEND_API)
+        
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, {
             method: 'POST',
             headers: {
@@ -124,9 +123,10 @@ export default function Signin() {
                     //     position: 'top-right',
                     //     autoClose: 2000
                     // });
+
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 window.location.href = "/"
             })
     };

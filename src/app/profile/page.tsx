@@ -1,11 +1,43 @@
 "use client"
 import React from 'react'
 import './ProfilePage.css'
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  bookings: string[]; // Array of booking IDs
+  city: string;
+}
+interface Seat {
+  row: string;
+  col: number;
+  seat_id: string;
+  price: number;
+  _id: string;
+}
+interface Booking {
+  _id: string;
+  showTime: string;
+  showDate: string;
+  movieId: {
+    title: string;
+  };
+  screenId: {
+    name: string;
+  };
+  seats: Seat[];
+  totalPrice: number;
+  paymentId: string;
+  paymentType: string;
+  userId: string;
+}
+
 
 const ProfilePage  = () => {
-    const [bookings, setBookings] = React.useState<any>(null)
-    const [user, setUser] = React.useState<any>(null)
-
+    //const [bookings, setBookings] = React.useState<any>(null)
+    //const [user, setUser] = React.useState<any>(null)
+    const [bookings, setBookings] = React.useState<Booking[] | null>(null);
+    const [user, setUser] = React.useState<User | null>(null);
     const getBookings = async () => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getuserbookings`, {
             method: 'GET',
@@ -150,69 +182,48 @@ const ProfilePage  = () => {
 
 
             </div>
-            <div className='bookings'>
-                <h2>Bookings</h2>
-                <div className='details'>
-                    {
-                        bookings?.map((booking: any) => {
-                            return (
-                                <div className='booking' key={booking._id}>
-                                    <div className='detail'>
-                                        <h3>Movie</h3>
-                                        <p>{booking.movieId.title}</p>
-                                    </div>
+<div className="bookings">
+  <h2>Bookings</h2>
+  <div className="details">
+    {bookings?.map((booking) => (
+      <div className="booking" key={booking._id}>
+        <div className="detail">
+          <h3>Movie</h3>
+          <p>{booking.movieId.title}</p>
+        </div>
+        <div className="detail">
+          <h3>Screen</h3>
+          <p>{booking.screenId.name}</p>
+        </div>
+        <div className="detail">
+          <h3>Seats</h3>
+          <p>
+            {booking.seats.map((seat) => (
+              <span key={seat._id}>{seat.seat_id}, </span>
+            ))}
+          </p>
+        </div>
+        <div className="detail">
+          <h3>Price</h3>
+          <p>{booking.totalPrice}</p>
+        </div>
+        <div className="detail">
+          <h3>Payment Type</h3>
+          <p>{booking.paymentType}</p>
+        </div>
+        <div className="detail">
+          <h3>Show Date</h3>
+          <p>{booking.showDate}</p>
+        </div>
+        <div className="detail">
+          <h3>Show Time</h3>
+          <p>{booking.showTime}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
-                                    <div className='detail'>
-                                        <h3>Screen</h3>
-                                        <p>{booking.screenId.name}</p>
-                                    </div>
-
-                                    <div className='detail'>
-                                        <h3>Seats</h3>
-                                        <p>{booking.seats.map((seat: any, index:any) => {
-                                            return (
-                                                <span 
-                                                key={index}
-                                                >{seat.seat_id}, </span>
-                                            )
-                                        }
-                                        )}</p>
-                                    </div>
-
-                                    <div className='detail'>
-
-                                        <h3>Price</h3>
-                                        <p>{booking.totalPrice}</p>
-                                    </div>
-
-                                    <div className='detail'>
-                                        <h3>Payment Type</h3>
-                                        <p>{booking.paymentType}</p>
-                                    </div>
-
-                                    <div className='detail'>
-                                        <h3>Payment Id</h3>
-                                        <p>{booking.paymentId}</p>
-                                    </div>
-
-                                    <div className='detail'>
-                                        <h3>Show Date</h3>
-                                        <p>{booking.showDate}</p>
-                                    </div>
-
-                                    <div className='detail'>
-                                        <h3>Show Time</h3>
-                                        <p>{booking.showTime}</p>
-                                    </div>
-
-
-
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            </div>
 
         </div>
     )

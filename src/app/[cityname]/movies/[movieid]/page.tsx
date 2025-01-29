@@ -4,8 +4,6 @@ import { BsShare } from 'react-icons/bs'
 import { BsFillStarFill } from 'react-icons/bs';
 import './MoviePage.css'
 import MovieCarousel from '@/components/moviecarousel/MovieCarousel';
-
-
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,13 +12,34 @@ import CelebCard from '@/components/CelebCard/CelebCard';
 import { usePathname, useParams } from 'next/navigation'
 import Link from 'next/link';
 
+// Define the type for the movie object
+interface CelebrityCardType{
+    name: string;
+    imageUrl: string;
+    _id: string;
+    role: string;
+}
+interface MovieCardType {
+    title: string;
+    portraitImgUrl: string;
+    landscapeImgUrl: string;
+    _id: string;
+    rating: number;
+    genre: string[];
+    description: string;
+    duration: number;
+    cast: CelebrityCardType[];
+    crew: CelebrityCardType[];
+
+}
+
 
 const MoviePage = () => {
     const pathname = usePathname()
     const { movieid } = useParams()
-   
-    const [movie, setMovie] = React.useState<any>(null)
-    console.log(movieid)
+
+    // Replace 'any' with the defined Movie type
+    const [movie, setMovie] = React.useState<MovieCardType | null>(null)
 
     const getMovie = async () => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movieid}`, {
@@ -40,28 +59,7 @@ const MoviePage = () => {
             .catch((err) => {
                 console.log(err)
             })
-
-
-
-
-        // {
-        //     "_id": "65101a2acc5b257e6f2816a5",
-        //     "title": "Jawan",
-        //     "description": "A high-octane action thriller that outlines the emotional journey of a man who is set to rectify the wrongs in society.",
-        //     "portraitImgUrl": "http://res.cloudinary.com/dy4laycuf/image/upload/v1695554088/wbfwtq1nksdazxdrelxa.webp",
-        //     "landscapeImgUrl": "http://res.cloudinary.com/dy4laycuf/image/upload/v1695554090/s3iwjeae4nev6ug3r0et.png",
-        //     "rating": 8,
-        //     "genre": [
-        //         "Action",
-        //         "Thriller"
-        //     ],
-        //     "duration": 130,
-        //     "cast": [],
-        //     "crew": [],
-        //     "__v": 0
-        // }
     }
-   
 
     React.useEffect(() => {
         getMovie()
@@ -92,24 +90,6 @@ const MoviePage = () => {
                                         <BsFillStarFill className='star' />&nbsp;&nbsp;
                                         {movie.rating}/10
                                     </p>
-                                    {/* <div className='halls_languages'>
-                                <p className='halls'>
-                                    {
-                                        movie.halls.map((hall, index) => {
-                                            return (
-                                                <span key={index}>{hall} </span>
-                                            )
-                                        })
-                                    }
-                                </p>
-                                <p className='languages'>
-                                    {movie.languages.map((language, index) => {
-                                        return (
-                                            <span key={index}>{language} </span>
-                                        )
-                                    })}
-                                </p>
-                            </div> */}
                                     <p className='duration_type_releasedat'>
                                         <span className='duration'>
                                             {movie.duration}
@@ -118,10 +98,6 @@ const MoviePage = () => {
                                         <span className='type'>
                                             {movie.genre.join(', ')}
                                         </span>
-                                        {/* <span>•</span>
-                                <span className='releasedat'>
-                                    {movie.releasedate}
-                                </span> */}
                                     </p>
                                     <Link
                                         href={`${pathname}/buytickets`}
@@ -133,7 +109,6 @@ const MoviePage = () => {
                                 </div>
                             </div>
                             <div className='right'>
-
                                 <button className='sharebtn'><BsShare className='shareicon' />Share</button>
                             </div>
                         </div>
@@ -142,10 +117,9 @@ const MoviePage = () => {
                         <h1>About the Movie</h1>
                         <p>{movie.description}</p>
                         {
-                            movie.cast.length>0 &&
+                            movie.cast.length > 0 &&
                             <div className='circlecardslider'>
                                 <div className='line'></div>
-
                                 <h1>Cast</h1>
                                 <Swiper
                                     slidesPerView={1}
@@ -187,10 +161,9 @@ const MoviePage = () => {
                             </div>
                         }
                         {
-                            movie.crew.length>0 &&
+                            movie.crew.length > 0 &&
                             <div className='circlecardslider'>
                                 <div className='line'></div>
-
                                 <h1>Crew</h1>
                                 <Swiper
                                     slidesPerView={1}
@@ -223,7 +196,7 @@ const MoviePage = () => {
                                         movie.crew.map((cast, index) => {
                                             return (
                                                 <SwiperSlide key={index}>
-                                                    <CelebCard {...cast} />
+                                                    <CelebCard  {...cast} />
                                                 </SwiperSlide>
                                             )
                                         })
@@ -235,7 +208,6 @@ const MoviePage = () => {
                         <h1>Your might also like</h1>
                         <MovieCarousel />
                     </div>
-
                 </div>
             }
         </>

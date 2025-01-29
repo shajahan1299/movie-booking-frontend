@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {  useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,7 +14,7 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 const HomeSlider = () => {
 
-    const [banners, setBanners] = useState([
+    const [banners] = useState([
         {
             imgUrl: 'https://assets-in.bmscdn.com/promotions/cms/creatives/1737621257955_webshowcase1240x300.jpg'
         },

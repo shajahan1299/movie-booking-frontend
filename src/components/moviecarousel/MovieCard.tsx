@@ -1,43 +1,57 @@
 import React from 'react'
-import { MovieCardType } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import { BsFillStarFill } from 'react-icons/bs';
-import './MovieCard.css'
+import './MovieCard.css';
 
-const MovieCard = (data: any) => {
+// Define the Movie interface
+interface Movie {
+    _id: string;
+    title: string;
+    genre: string[];
+    rating: number;
+    portraitImgUrl: string;
+}
+
+// Define the User interface
+interface User {
+    city: string;
+}
+
+// Define the Props interface
+interface MovieCardProps {
+    Movie: Movie;
+    user: User;
+}
+
+const MovieCard: React.FC<MovieCardProps> = ({ Movie, user }) => {
     const router = useRouter();
-    const { _id, title, genre, rating, portraitImgUrl } = data.Movie;
-    const { city } = data.user;
-    console.log(city)
-    // const city = 'mumbai'
+    const { _id, title, genre, rating, portraitImgUrl } = Movie;
+    const { city } = user;
 
     return (
         <div
             className='moviecard'
             onClick={() => {
-                router.push(`/${city}/movies/${_id}`)
-
+                router.push(`/${city}/movies/${_id}`);
             }}
         >
-            <div className='movieimg'
+            <div
+                className='movieimg'
                 style={{
                     backgroundImage: `url(${portraitImgUrl})`
                 }}
             >
                 <p className='rating'>
                     <BsFillStarFill className='star' />&nbsp;&nbsp;
-                    {rating}/10</p>
+                    {rating}/10
+                </p>
             </div>
             <div className='details'>
-                <p className='title'>
-                    {title}
-                </p>
-                <p className='type'>
-                    {genre.join(", ")}
-                </p>
+                <p className='title'>{title}</p>
+                <p className='type'>{genre.join(", ")}</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MovieCard
+export default MovieCard;

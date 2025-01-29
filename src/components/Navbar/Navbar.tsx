@@ -10,9 +10,14 @@ import LocationPopup from '@/popups/location/LocationPopup'
 
 
 
-const Navbar = () => {
-    const [showLocationPopup, setShowLocationPopup] = React.useState<boolean>(false)
-    const [user, setUser] = React.useState<any>(null)
+interface User {
+    city: string;
+    name?: string; // Add other fields if needed
+  }
+  
+  const Navbar: React.FC = () => {
+    const [showLocationPopup, setShowLocationPopup] = React.useState<boolean>(false);
+    const [user, setUser] = React.useState<User | null>(null);
     const [loggedIn, setLoggedIn] = React.useState<boolean>(false)
     const getuser = async () => {
 
